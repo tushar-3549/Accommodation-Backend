@@ -33,16 +33,24 @@ ROOT_URLCONF = "nol_backend.urls"
 WSGI_APPLICATION = "nol_backend.wsgi.application"
 ASGI_APPLICATION = "nol_backend.asgi.application"
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.getenv("POSTGRES_DB", "nol"),
+#         "USER": os.getenv("POSTGRES_USER", "nol"),
+#         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "nol"),
+#         "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
+#         "PORT": os.getenv("POSTGRES_PORT", "5432"),
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "nol"),
-        "USER": os.getenv("POSTGRES_USER", "nol"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "nol"),
-        "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
-        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -63,6 +71,24 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],  # you can add template dirs here if you want
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
 
 TIME_ZONE = "UTC"
 USE_TZ = True
