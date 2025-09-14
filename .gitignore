@@ -1,0 +1,41 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Django stuff:
+*.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo
+*.swp
+db.sqlite3
+media/
+staticfiles/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# VS Code / IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# Node / frontend if you have one
+node_modules/
+npm-debug.log
+yarn-error.log
