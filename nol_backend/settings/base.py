@@ -1,24 +1,22 @@
+import os
 from pathlib import Path
 from datetime import timedelta
-import os
-
 from dotenv import load_dotenv
-BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(os.path.join(BASE_DIR, ".env"))
+load_dotenv()
 
+BASE_DIR = Path(__file__).resolve().parents[2]  # project root
 
-
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
-DEBUG = os.getenv("DEBUG", "1") == "1"
-ALLOWED_HOSTS = ["*"]
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")  # dev default; prod.py override
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
     "rest_framework", "django_filters",
-    "apps.users", "apps.geo", "apps.search", "apps.property", "apps.inventory",
-    "apps.marketing", "apps.content",
+    # your apps
+    "apps.users", "apps.geo", "apps.search", "apps.property",
+    "apps.inventory", "apps.marketing", "apps.content",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -38,29 +36,20 @@ ROOT_URLCONF = "nol_backend.urls"
 WSGI_APPLICATION = "nol_backend.wsgi.application"
 ASGI_APPLICATION = "nol_backend.asgi.application"
 
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("POSTGRES_HOST"),
-        "PORT": os.getenv("POSTGRES_PORT", "5432"),
-        "OPTIONS": {"sslmode": "require"},
-        "CONN_MAX_AGE": 60,
-    }
-}
-
-
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -82,25 +71,19 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],  # you can add template dirs here if you want
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
-    },
-]
-
-
+LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
+USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
