@@ -33,16 +33,6 @@ ROOT_URLCONF = "nol_backend.urls"
 WSGI_APPLICATION = "nol_backend.wsgi.application"
 ASGI_APPLICATION = "nol_backend.asgi.application"
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("POSTGRES_DB", "nol"),
-#         "USER": os.getenv("POSTGRES_USER", "nol"),
-#         "PASSWORD": os.getenv("POSTGRES_PASSWORD", "nol"),
-#         "HOST": os.getenv("POSTGRES_HOST", "127.0.0.1"),
-#         "PORT": os.getenv("POSTGRES_PORT", "5432"),
-#     }
-# }
 
 DATABASES = {
     "default": {
@@ -50,6 +40,21 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "OPTIONS": {"sslmode": "require"},
+        "CONN_MAX_AGE": 60,
+    }
+}
+
 
 
 REST_FRAMEWORK = {
