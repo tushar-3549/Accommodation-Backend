@@ -13,4 +13,11 @@ urlpatterns = [
     path("properties/", include("apps.property.urls")),
     path("marketing/", include("apps.marketing.urls")),
     path("content/", include("apps.content.urls")),
+
+    path("home/", include("apps.home.urls")),
+    path("", include("apps.reviews.urls")),
+    path("", include("apps.bookings.urls")),
+    path("", include("apps.payments.urls")),
+
+
 ]

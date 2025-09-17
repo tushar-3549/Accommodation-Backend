@@ -14,9 +14,15 @@ INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
     "rest_framework", "django_filters",
-    # your apps
+    # apps
     "apps.users", "apps.geo", "apps.search", "apps.property",
     "apps.inventory", "apps.marketing", "apps.content",
+    "apps.home",
+    "apps.reviews",
+    "apps.bookings",
+    "apps.payments",
+    
+
 ]
 
 AUTH_USER_MODEL = "users.User"

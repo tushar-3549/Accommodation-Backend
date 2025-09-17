@@ -73,3 +73,27 @@ class PropertyViewSet(mixins.ListModelMixin,
             "total_price": total,
             "nights_breakdown": list(prices),
         })
+    
+    @action(detail=False, methods=["get"], url_path="map")
+    def on_map(self, request):
+        bounds = request.query_params.get("bounds")  # "lat1,lng1,lat2,lng2"
+        query = request.query_params.get("query")
+        qs = self.filter_queryset(self.get_queryset())
+        if query:
+            qs = qs.filter(name__icontains=query) | qs.filter(city__name__icontains=query)
+        if bounds:
+            lat1,lng1,lat2,lng2 = [float(x) for x in bounds.split(",")]
+            lo_lat, hi_lat = min(lat1,lat2), max(lat1,lat2)
+            lo_lng, hi_lng = min(lng1,lng2), max(lng1,lng2)
+            qs = qs.filter(latitude__gte=lo_lat, latitude__lte=hi_lat,
+                           longitude__gte=lo_lng, longitude__lte=hi_lng)
+        data = [
+            {"id":p.id,"name":p.name,"slug":p.slug,"lat":float(p.latitude or 0),"lng":float(p.longitude or 0),
+             "min_price":str(getattr(p,"min_price",0)),"currency":"KRW"}
+            for p in qs[:200]
+        ]
+        return Response(data)
+
+
+
+
