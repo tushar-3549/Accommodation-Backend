@@ -3,7 +3,7 @@ from slugify import slugify
 
 class Country(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    code = models.CharField(max_length=2, unique=True)  # ISO-2
+    code = models.CharField(max_length=3, unique=True)  # ISO-3
     slug = models.SlugField(max_length=120, unique=True, blank=True)
 
     def save(self, *args, **kwargs):
