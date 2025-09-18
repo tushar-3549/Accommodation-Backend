@@ -10,6 +10,10 @@ from .models import Property, RoomType, RatePlan
 from .filters import PropertyFilter
 from apps.inventory.models import NightlyPrice
 
+from decimal import Decimal
+from django.db.models import DecimalField, Q
+
+
 from .serializers import (
     PropertyCardSerializer,
     PropertyDetailSerializer,
@@ -51,11 +55,27 @@ class PropertyViewSet(viewsets.ModelViewSet):
         else:
             price_qs = price_qs.filter(stay_date__gte=date.today())
 
+        # qs = qs.annotate(
+        #     min_price=Coalesce(Min(price_qs.values("final_price")), Value(0)),
+        #     currency=Value(currency),
+        #     discount_percent=Coalesce(Min(price_qs.values("discount_percent")), Value(0), output_field=IntegerField()),
+        # )
+
         qs = qs.annotate(
-            min_price=Coalesce(Min(price_qs.values("final_price")), Value(0)),
+            min_price=Coalesce(
+                Min("prices__final_price", filter=Q(prices__currency=currency)),
+                Value(Decimal("0.00")),
+                output_field=DecimalField(max_digits=10, decimal_places=2),
+            ),
             currency=Value(currency),
-            discount_percent=Coalesce(Min(price_qs.values("discount_percent")), Value(0), output_field=IntegerField()),
-        )
+            discount_percent=Coalesce(
+                Min("prices__discount_percent", filter=Q(prices__currency=currency)),
+                Value(0),
+                output_field=IntegerField(),
+            ),
+        ).order_by("id")
+
+
 
         page = self.paginate_queryset(qs)
         ser = self.get_serializer(page, many=True)

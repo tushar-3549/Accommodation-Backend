@@ -1,6 +1,6 @@
 from decimal import Decimal
-from datetime import timedelta
 from apps.inventory.models import NightlyPrice
+
 
 def quote_total(property_id, room_type_id, rate_plan_id, check_in, check_out, currency="KRW"):
     nights = (check_out - check_in).days

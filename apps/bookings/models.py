@@ -2,13 +2,14 @@ from django.db import models
 from django.conf import settings
 from apps.property.models import Property, RoomType, RatePlan
 
+
 class Booking(models.Model):
     class Status(models.TextChoices):
         PENDING = "PENDING"
         CONFIRMED = "CONFIRMED"
         CANCELLED = "CANCELLED"
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="bookings")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="bookings", null=True, blank=True)
     code = models.CharField(max_length=20, unique=True)
     property = models.ForeignKey(Property, on_delete=models.PROTECT)
     room_type = models.ForeignKey(RoomType, on_delete=models.PROTECT)
@@ -25,3 +26,6 @@ class Booking(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.code} - {self.property.name} ({self.status})"
