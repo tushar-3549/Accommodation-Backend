@@ -15,6 +15,12 @@ class Promotion(models.Model):
     def active(self) -> bool:
         now = timezone.now()
         return self.start_at <= now <= self.end_at
+    
+    class Meta:
+        ordering = ["-start_at", "id"]
+        indexes = [models.Index(fields=["start_at", "end_at"])]
+
+
 
 class Campaign(models.Model):
     name = models.CharField(max_length=160)
@@ -36,12 +42,20 @@ class Banner(models.Model):
     order = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ["placement", "order", "id"]
+        indexes = [models.Index(fields=["placement", "active"])]
+
 class FeaturedCollection(models.Model):
     title = models.CharField(max_length=160)
     subtitle = models.CharField(max_length=200, blank=True)
     slug = models.SlugField(unique=True)
     order = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order", "id"]
+
 
 class CollectionItem(models.Model):
     class ItemType(models.TextChoices):
@@ -55,3 +69,6 @@ class CollectionItem(models.Model):
     city = models.ForeignKey(City, null=True, blank=True, on_delete=models.CASCADE)
     promotion = models.ForeignKey(Promotion, null=True, blank=True, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
