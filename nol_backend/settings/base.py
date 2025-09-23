@@ -8,12 +8,13 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parents[2]  # project root
 
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")  # dev default; prod.py override
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+# ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
-    "rest_framework", "django_filters",
+    "rest_framework", "django_filters", 'drf_yasg',
     # apps
     "apps.users", "apps.geo", "apps.search", "apps.property",
     "apps.inventory", "apps.marketing", "apps.content",

@@ -6,3 +6,4 @@ psycopg[binary]
 python-slugify
 pytz
 python-dotenv
+drf_yasg
