@@ -14,7 +14,7 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
-    "rest_framework", "django_filters", 'drf_yasg',
+    "rest_framework", "django_filters", 'drf_yasg', 'corsheaders',
     # apps
     "apps.users", "apps.geo", "apps.search", "apps.property",
     "apps.inventory", "apps.marketing", "apps.content",
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware", 
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -94,3 +95,10 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    "https://nol.yanolja.com",
+    "http://localhost:8000",
+]
+CORS_ALLOW_CREDENTIALS = True
